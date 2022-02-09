@@ -26,6 +26,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
+import static com.tencent.shadow.test.none_dynamic.host.HostApplication.PART_1;
+import static com.tencent.shadow.test.none_dynamic.host.HostApplication.PART_2;
 import static com.tencent.shadow.test.none_dynamic.host.HostApplication.PART_MAIN;
 
 public class MainActivity extends Activity {
@@ -66,6 +68,30 @@ public class MainActivity extends Activity {
                 pluginIntent.putStringArrayListExtra("activities", TestComponentManager.sActivities);
                 Intent intent = application.getPluginLoader().getMComponentManager().convertPluginActivityIntent(pluginIntent);
                 startActivity(intent);
+            }
+        });
+        application.loadPlugin(PART_1, new Runnable(){
+            @Override
+            public void run() {
+
+                Intent pluginIntent1 = new Intent();
+                pluginIntent1.setClassName(getPackageName(), "com.hzl.none_dynamic_room_plugin1.MainAct");
+                pluginIntent1.putStringArrayListExtra("activities", TestComponentManager.sActivities);
+                Intent intent1 = application.getPluginLoader().getMComponentManager().convertPluginActivityIntent(pluginIntent1);
+                startActivity(intent1);
+
+            }
+        });
+        application.loadPlugin(PART_2, new Runnable(){
+            @Override
+            public void run() {
+
+                Intent pluginIntent1 = new Intent();
+                pluginIntent1.setClassName(getPackageName(), "com.hzl.none_dynamic_room_plugin2.MainAct");
+                pluginIntent1.putStringArrayListExtra("activities", TestComponentManager.sActivities);
+                Intent intent1 = application.getPluginLoader().getMComponentManager().convertPluginActivityIntent(pluginIntent1);
+                startActivity(intent1);
+
             }
         });
 

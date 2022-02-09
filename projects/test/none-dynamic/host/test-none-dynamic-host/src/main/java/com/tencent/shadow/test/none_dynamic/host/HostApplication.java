@@ -40,10 +40,20 @@ public class HostApplication extends Application {
     private static Application sApp;
 
     public final static String PART_MAIN = "partMain";
+    public final static String PART_1 = "part1";
+    public final static String PART_2 = "part2";
 
     private static final PreparePluginApkBloc sPluginPrepareBloc
             = new PreparePluginApkBloc(
             "plugin.apk"
+    );
+    private static final PreparePluginApkBloc sPluginPrepareBloc1
+            = new PreparePluginApkBloc(
+            "plugin1.apk"
+    );
+    private static final PreparePluginApkBloc sPluginPrepareBloc2
+            = new PreparePluginApkBloc(
+            "plugin2.apk"
     );
 
     static {
@@ -121,7 +131,11 @@ public class HostApplication extends Application {
         ContentProviderDelegateProviderHolder.setContentProviderDelegateProvider(loader);
 
         InstalledApk installedApk = sPluginPrepareBloc.preparePlugin(this.getApplicationContext());
+        InstalledApk installedApk1 = sPluginPrepareBloc1.preparePlugin(this.getApplicationContext());
+        InstalledApk installedApk2 = sPluginPrepareBloc2.preparePlugin(this.getApplicationContext());
         mPluginMap.put(PART_MAIN, installedApk);
+        mPluginMap.put(PART_1, installedApk1);
+        mPluginMap.put(PART_2, installedApk2);
     }
 
     private static void detectNonSdkApiUsageOnAndroidP() {

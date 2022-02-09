@@ -27,7 +27,9 @@ def includeTest() {
             'androidx-cases-app',
             'test-plugin-androidx-cases',
             'plugin-service-for-host',
-            'test-none-dynamic-host'
+            'test-none-dynamic-host',
+            'none-dynamic-room-plugin1',
+            'none-dynamic-room-plugin2'
     project(':test-dynamic-host').projectDir = file('projects/test/dynamic/host/test-dynamic-host')
     project(':test-dynamic-manager').projectDir = file('projects/test/dynamic/manager/test-dynamic-manager')
     project(':test-dynamic-loader').projectDir = file('projects/test/dynamic/plugin/test-dynamic-loader')
@@ -44,6 +46,8 @@ def includeTest() {
     project(':general-cases-app').projectDir = file('projects/test/plugin/general-cases/general-cases-app')
     project(':plugin-service-for-host').projectDir = file('projects/test/plugin/particular-cases/plugin-service-for-host')
     project(':test-none-dynamic-host').projectDir = file('projects/test/none-dynamic/host/test-none-dynamic-host')
+    project(':none-dynamic-room-plugin1').projectDir = file('projects/test/none-dynamic/none-dynamic-room-plugin1')
+    project(':none-dynamic-room-plugin2').projectDir = file('projects/test/none-dynamic/none-dynamic-room-plugin2')
 }
 
 def includeSample() {
@@ -58,6 +62,7 @@ def includeSample() {
             'sample-base-lib',
             'sample-base',
             'sample-app'
+
     project(':sample-constant').projectDir = file('projects/sample/source/sample-constant')
     project(':sample-host').projectDir = file('projects/sample/source/sample-host')
     project(':sample-host-lib').projectDir = file('projects/sample/source/sample-host-lib')
@@ -99,3 +104,5 @@ def copyLocalPropertiesForIncludeBuilds() {
         }
     }
 }
+
+
