@@ -29,7 +29,9 @@ def includeTest() {
             'plugin-service-for-host',
             'test-none-dynamic-host',
             'none-dynamic-room-plugin1',
-            'none-dynamic-room-plugin2'
+            'none-dynamic-room-plugin2',
+            'room-base',
+            'room-base-lib'
     project(':test-dynamic-host').projectDir = file('projects/test/dynamic/host/test-dynamic-host')
     project(':test-dynamic-manager').projectDir = file('projects/test/dynamic/manager/test-dynamic-manager')
     project(':test-dynamic-loader').projectDir = file('projects/test/dynamic/plugin/test-dynamic-loader')
@@ -48,6 +50,8 @@ def includeTest() {
     project(':test-none-dynamic-host').projectDir = file('projects/test/none-dynamic/host/test-none-dynamic-host')
     project(':none-dynamic-room-plugin1').projectDir = file('projects/test/none-dynamic/none-dynamic-room-plugin1')
     project(':none-dynamic-room-plugin2').projectDir = file('projects/test/none-dynamic/none-dynamic-room-plugin2')
+    project(':room-base').projectDir = file('projects/test/none-dynamic/room-base')
+    project(':room-base-lib').projectDir = file('projects/test/none-dynamic/room-base-lib')
 }
 
 def includeSample() {
@@ -106,3 +110,5 @@ def copyLocalPropertiesForIncludeBuilds() {
 }
 
 
+include ':room-base'
+include ':room-base-lib'

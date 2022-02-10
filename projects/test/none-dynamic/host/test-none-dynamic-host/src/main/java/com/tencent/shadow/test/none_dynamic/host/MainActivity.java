@@ -26,6 +26,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
+import static com.tencent.shadow.test.none_dynamic.host.HostApplication.BASE;
 import static com.tencent.shadow.test.none_dynamic.host.HostApplication.PART_1;
 import static com.tencent.shadow.test.none_dynamic.host.HostApplication.PART_2;
 import static com.tencent.shadow.test.none_dynamic.host.HostApplication.PART_MAIN;
@@ -70,12 +71,18 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
+        application.loadPlugin(BASE, new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
         application.loadPlugin(PART_1, new Runnable(){
             @Override
             public void run() {
 
                 Intent pluginIntent1 = new Intent();
-                pluginIntent1.setClassName(getPackageName(), "com.hzl.none_dynamic_room_plugin1.MainAct");
+                pluginIntent1.setClassName(getPackageName(), "com.tencent.shadow.none_dynamic_room_plugin1.MainAct");
                 pluginIntent1.putStringArrayListExtra("activities", TestComponentManager.sActivities);
                 Intent intent1 = application.getPluginLoader().getMComponentManager().convertPluginActivityIntent(pluginIntent1);
                 startActivity(intent1);
@@ -87,7 +94,7 @@ public class MainActivity extends Activity {
             public void run() {
 
                 Intent pluginIntent1 = new Intent();
-                pluginIntent1.setClassName(getPackageName(), "com.hzl.none_dynamic_room_plugin2.MainAct");
+                pluginIntent1.setClassName(getPackageName(), "com.tencent.shadow.none_dynamic_room_plugin2.MainAct");
                 pluginIntent1.putStringArrayListExtra("activities", TestComponentManager.sActivities);
                 Intent intent1 = application.getPluginLoader().getMComponentManager().convertPluginActivityIntent(pluginIntent1);
                 startActivity(intent1);
@@ -97,4 +104,10 @@ public class MainActivity extends Activity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //可以从App Inspection 观察到数据库正常
+        CDatabaseObject.INSTANCE.getCDatabase(this).getDataCDao().save(new DataC(8, System.currentTimeMillis() + ""));
+    }
 }

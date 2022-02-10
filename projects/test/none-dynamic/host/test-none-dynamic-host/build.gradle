@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion project.COMPILE_SDK_VERSION
@@ -29,6 +31,7 @@ android {
             assets.srcDir('build/generated/assets/test-plugin-general-cases/debug/')
             assets.srcDir('build/generated/assets/none-dynamic-room-plugin1/debug/')
             assets.srcDir('build/generated/assets/none-dynamic-room-plugin2/debug/')
+            assets.srcDir('build/generated/assets/room-base/debug/')
         }
         release {
             assets.srcDir('build/generated/assets/test-plugin-general-cases/release/')
@@ -45,6 +48,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:1.7.25'
 
     implementation 'androidx.room:room-runtime:2.2.6'
+    kapt 'androidx.room:room-compiler:2.2.6'
 
     implementation 'com.tencent.shadow.core:common'
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -77,5 +81,6 @@ tasks.whenTaskAdded { task ->
         task.dependsOn createCopyTask(':test-plugin-general-cases', 'debug', 'test-plugin-general-cases', 'plugin.apk')
         task.dependsOn createCopyTask(':none-dynamic-room-plugin1', 'debug', 'none-dynamic-room-plugin1', 'plugin1.apk')
         task.dependsOn createCopyTask(':none-dynamic-room-plugin2', 'debug', 'none-dynamic-room-plugin2', 'plugin2.apk')
+        task.dependsOn createCopyTask(':room-base', 'debug', 'room-base', 'base.apk')
     }
 }

@@ -31,6 +31,7 @@ import com.tencent.shadow.core.loader.ShadowPluginLoader;
 import com.tencent.shadow.core.runtime.container.ContentProviderDelegateProviderHolder;
 import com.tencent.shadow.core.runtime.container.DelegateProviderHolder;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -42,6 +43,7 @@ public class HostApplication extends Application {
     public final static String PART_MAIN = "partMain";
     public final static String PART_1 = "part1";
     public final static String PART_2 = "part2";
+    public final static String BASE = "base";
 
     private static final PreparePluginApkBloc sPluginPrepareBloc
             = new PreparePluginApkBloc(
@@ -54,6 +56,10 @@ public class HostApplication extends Application {
     private static final PreparePluginApkBloc sPluginPrepareBloc2
             = new PreparePluginApkBloc(
             "plugin2.apk"
+    );
+    private static final PreparePluginApkBloc sPluginPrepareBlocBase
+            = new PreparePluginApkBloc(
+            "base.apk"
     );
 
     static {
@@ -75,15 +81,17 @@ public class HostApplication extends Application {
         if (mPluginLoader.getPluginParts(partKey) == null) {
             // 插件访问宿主类的白名单
             String[] hostWhiteList = new String[]{
-                    "androidx.room",
-                    "androidx.room.**",
                     "androidx.test.espresso",//这个包添加是为了general-cases插件中可以访问测试框架的类
                     "com.tencent.shadow.test.lib.plugin_use_host_code_lib.interfaces"//测试插件访问宿主白名单类
             };
-            LoadParameters loadParameters = new LoadParameters(null,
+            String[] dependsOn = null;
+            if(partKey.equals(PART_1) || partKey.equals(PART_2))
+                dependsOn = new String[]{BASE};
+            LoadParameters loadParameters =  new LoadParameters(null,
                     partKey,
-                    null,
+                    dependsOn,
                     hostWhiteList);
+
 
             Parcel parcel = Parcel.obtain();
             loadParameters.writeToParcel(parcel, 0);
@@ -127,6 +135,8 @@ public class HostApplication extends Application {
         super.onCreate();
         sApp = this;
 
+        CDatabaseObject.INSTANCE.getCDatabase(this).getDataCDao().save(new DataC(8,"8"));
+
         ShadowPluginLoader loader = mPluginLoader = new TestPluginLoader(getApplicationContext());
         loader.onCreate();
         DelegateProviderHolder.setDelegateProvider(loader.getDelegateProviderKey(), loader);
@@ -135,7 +145,9 @@ public class HostApplication extends Application {
         InstalledApk installedApk = sPluginPrepareBloc.preparePlugin(this.getApplicationContext());
         InstalledApk installedApk1 = sPluginPrepareBloc1.preparePlugin(this.getApplicationContext());
         InstalledApk installedApk2 = sPluginPrepareBloc2.preparePlugin(this.getApplicationContext());
+        InstalledApk base = sPluginPrepareBlocBase.preparePlugin(this.getApplicationContext());
         mPluginMap.put(PART_MAIN, installedApk);
+        mPluginMap.put(BASE, base);
         mPluginMap.put(PART_1, installedApk1);
         mPluginMap.put(PART_2, installedApk2);
     }
